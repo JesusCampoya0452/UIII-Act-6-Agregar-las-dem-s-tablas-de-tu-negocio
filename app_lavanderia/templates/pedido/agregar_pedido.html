@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-cart-plus"></i> Realizar Nuevo Pedido</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado:</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Completado">Completado</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_entrega" class="form-label">Fecha de Entrega:</label>
+                        <input type="date" class="form-control" id="fecha_entrega" name="fecha_entrega">
+                        <small class="form-text text-muted">Opcional.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productos" class="form-label">Productos en el Pedido:</label>
+                        <select class="form-select" id="productos" name="productos" multiple required size="5">
+                            {% for producto in productos %}
+                                <option value="{{ producto.id_prd }}">{{ producto.nombre }} ({{ producto.unidad_medida }})</option>
+                            {% endfor %}
+                        </select>
+                        <small class="form-text text-muted">Mantén 'Ctrl' (Windows) o 'Cmd' (Mac) para seleccionar múltiples productos.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Pedido</button>
+                    <a href="{% url 'ver_pedidos' %}" class="btn btn-secondary ms-2"><i class="fas fa-arrow-left"></i> Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

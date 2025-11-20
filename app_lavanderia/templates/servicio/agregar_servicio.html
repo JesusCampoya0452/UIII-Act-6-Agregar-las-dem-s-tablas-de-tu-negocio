@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0"><i class="fas fa-plus-circle"></i> Añadir Nuevo Servicio</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cliente" class="form-label">Cliente:</label>
+                            <select class="form-select" id="cliente" name="cliente" required>
+                                <option value="" disabled selected>Selecciona un cliente</option>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.id }}">{{ cliente.nombre }} {{ cliente.apellido }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="empleados" class="form-label">Empleados Asignados:</label>
+                            <select class="form-select" id="empleados" name="empleados" multiple required>
+                                <option value="" disabled>Selecciona uno o más empleados</option>
+                                {% for empleado in empleados %}
+                                    <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }} ({{ empleado.puesto }})</option>
+                                {% endfor %}
+                            </select>
+                            <small class="form-text text-muted">Mantén Ctrl (o Cmd) para seleccionar múltiples empleados.</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo_servicio" class="form-label">Tipo de Servicio:</label>
+                            <input type="text" class="form-control" id="tipo_servicio" name="tipo_servicio" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="fecha_servicio" class="form-label">Fecha del Servicio:</label>
+                            <input type="date" class="form-control" id="fecha_servicio" name="fecha_servicio" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="hora_entrega" class="form-label">Hora de Entrega:</label>
+                            <input type="time" class="form-control" id="hora_entrega" name="hora_entrega" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción:</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="precio" class="form-label">Precio:</label>
+                            <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <select class="form-select" id="estado" name="estado" required>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Completado">Completado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="forma_pago" class="form-label">Forma de Pago:</label>
+                            <input type="text" class="form-control" id="forma_pago" name="forma_pago" value="Efectivo">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar Servicio</button>
+                    <a href="{% url 'ver_servicios' %}" class="btn btn-secondary ms-2"><i class="fas fa-arrow-left"></i> Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

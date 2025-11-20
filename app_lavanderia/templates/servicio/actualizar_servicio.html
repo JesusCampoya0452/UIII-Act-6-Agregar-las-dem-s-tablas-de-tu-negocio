@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h3 class="mb-0"><i class="fas fa-edit"></i> Actualizar Servicio: {{ servicio.tipo_servicio }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cliente" class="form-label">Cliente:</label>
+                            <select class="form-select" id="cliente" name="cliente" required>
+                                {% for cliente_option in clientes %}
+                                    <option value="{{ cliente_option.id }}" {% if cliente_option == servicio.cliente %}selected{% endif %}>
+                                        {{ cliente_option.nombre }} {{ cliente_option.apellido }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="empleados" class="form-label">Empleados Asignados:</label>
+                            <select class="form-select" id="empleados" name="empleados" multiple required>
+                                {% for empleado_option in empleados %}
+                                    <option value="{{ empleado_option.id }}" {% if empleado_option in empleados_seleccionados %}selected{% endif %}>
+                                        {{ empleado_option.nombre }} {{ empleado_option.apellido }} ({{ empleado_option.puesto }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <small class="form-text text-muted">Mantén Ctrl (o Cmd) para seleccionar múltiples empleados.</small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tipo_servicio" class="form-label">Tipo de Servicio:</label>
+                            <input type="text" class="form-control" id="tipo_servicio" name="tipo_servicio" value="{{ servicio.tipo_servicio }}" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="fecha_servicio" class="form-label">Fecha del Servicio:</label>
+                            <input type="date" class="form-control" id="fecha_servicio" name="fecha_servicio" value="{{ servicio.fecha_servicio|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="hora_entrega" class="form-label">Hora de Entrega:</label>
+                            <input type="time" class="form-control" id="hora_entrega" name="hora_entrega" value="{{ servicio.hora_entrega|time:'H:i' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción:</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ servicio.descripcion }}</textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="precio" class="form-label">Precio:</label>
+                            <input type="number" step="0.01" class="form-control" id="precio" name="precio" value="{{ servicio.precio }}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <select class="form-select" id="estado" name="estado" required>
+                                <option value="Pendiente" {% if servicio.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="En proceso" {% if servicio.estado == 'En proceso' %}selected{% endif %}>En proceso</option>
+                                <option value="Completado" {% if servicio.estado == 'Completado' %}selected{% endif %}>Completado</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="forma_pago" class="form-label">Forma de Pago:</label>
+                            <input type="text" class="form-control" id="forma_pago" name="forma_pago" value="{{ servicio.forma_pago }}">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-sync-alt"></i> Actualizar Servicio</button>
+                    <a href="{% url 'ver_servicios' %}" class="btn btn-secondary ms-2"><i class="fas fa-arrow-left"></i> Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
